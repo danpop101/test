@@ -4,24 +4,30 @@ import { QrReader } from "react-qr-reader";
 
 export default function Home() {
   const [data, setData] = useState("No result");
+  var audio = new Audio("./beep.wav");
 
   return (
-    <>
-      <QrReader
-        onResult={(result, error) => {
-          if (!!result) {
-            setData(result?.getText);
-          }
+    <div className="flex flex-col items-center justify-center gap-8">
+      <div className="flex-1 mt-4 min-h-[430px]">
+        <QrReader
+          onResult={(result, error) => {
+            if (!!result) {
+              setData(result?.getText().toString());
+              audio.play();
+            }
 
-          if (!!error) {
-            console.info(error);
-          }
-        }}
-        containerStyle={{ height: 240, width: 320 }}
-        scanDelay={500}
-        constraints={{ facingMode: "user" }}
-      />
-      <p>{data}</p>
-    </>
+            if (!!error) {
+              console.info(error);
+            }
+          }}
+          containerStyle={{ height: 240, width: 450 }}
+          scanDelay={2000}
+          constraints={{ facingMode: "environment" }}
+        />
+      </div>
+      <div className="flex-1">
+        <p>{data}</p>
+      </div>
+    </div>
   );
 }
